@@ -1,0 +1,41 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model StudentRecord {
+  id                    String                  @id
+  name                  String
+  email                 String                  @unique
+  password              String
+  StudentQuestionRecord StudentQuestionRecord[]
+}
+
+model QuestionRecord {
+  id                    String                  @id
+  institution           String
+  title                 String
+  imagepath             String?
+  alternatives          String
+  subject               String
+  topic                 String
+  year                  Int
+  StudentQuestionRecord StudentQuestionRecord[]
+}
+
+model StudentQuestionRecord {
+  id                String         @unique
+  student           StudentRecord  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId         String
+  question          QuestionRecord @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId        String
+  correctlyAnswered Boolean
+  inTime            Boolean
+}
