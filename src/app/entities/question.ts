@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 
 export interface QuestionEntity {
-    id?: string,
+    id: string,
     year: number,
     title: string,
     topic: string,
@@ -16,7 +16,7 @@ export class Question {
     public props: Omit<QuestionEntity, 'id'>;
 
 
-    constructor(props: QuestionEntity, id?: string) {
+    constructor(props: Omit<QuestionEntity, 'id'>, id?: string) {
         
         this._id = id ?? randomUUID();
         this.props = props;

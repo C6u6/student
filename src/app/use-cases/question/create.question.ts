@@ -17,7 +17,6 @@ export class CreateQuestion {
         } = request;
 
         const question = new Question({
-            id,
             institution, 
             subject, 
             topic, 

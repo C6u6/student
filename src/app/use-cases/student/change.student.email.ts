@@ -7,7 +7,7 @@ import { StudentNotFound } from "../errors/errors";
 export class ChangeEmail {
     constructor(private studentRepository: StudentRepository) {}
 
-    async execute(request: Partial<StudentEntity>): Promise<void> {
+    async execute(request: StudentEntity): Promise<void> {
         const { id, email } = request;
 
         const student = await this.studentRepository.findById(id);

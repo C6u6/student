@@ -1,4 +1,3 @@
-import { QuestionEntity } from "src/app/entities/question";
 import { StudentQuestionEntity } from "src/app/entities/student.question";
 import { StudentQuestionRepository } from "src/app/repositories/student.question.repository";
 import { PrismaStudentInteractionMappper } from "../mappers/prisma.student.interaction.mapper";

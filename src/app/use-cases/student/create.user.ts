@@ -10,11 +10,10 @@ interface CreateStudentResponse {
 export class CreateStudent {
     constructor(private studentRepository: StudentRepository) {}
 
-    async execute(request: Partial<StudentEntity>): Promise<CreateStudentResponse> {
-        const {name, email, password, id } = request;
+    async execute(request: StudentEntity): Promise<CreateStudentResponse> {
+        const {name, email, password } = request;
 
         const student = new Student({
-            id,
             name,
             email,
             password,

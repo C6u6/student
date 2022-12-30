@@ -17,7 +17,6 @@ export class PrismaQuestionMappper {
 
     static toDomain(raw: QuestionEntity) {
         return new Question({
-            id: raw.id,
             year: raw.year,
             title: raw.title,
             topic: raw.topic,
