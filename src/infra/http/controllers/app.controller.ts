@@ -1,4 +1,4 @@
-import { Controller, Param, Get, Post, Body } from '@nestjs/common';
+import { Controller, Param, Get, Post, Body, HttpCode } from '@nestjs/common';
 import { CreateStudent } from 'src/app/use-cases/student/create.user';
 import { CreateQuestion } from '@app/use-cases/question/create.question';
 import { CreateQuestionBody } from '../dtos/create.questions.body';
@@ -9,6 +9,7 @@ import { QuestionViewModel } from '../view-models/question.view.model';
 import { RespondToQuestion } from '@app/use-cases/student-and-question/respond.to.question';
 import { StudentQuestionViewModel } from '../view-models/student.and.question';
 import * as bcrypt from 'bcrypt';
+import { PrismaClient } from '@prisma/client';
 
 
 @Controller()
@@ -24,6 +25,7 @@ export class AppController {
   }
 
   @Post('create/student')
+  @HttpCode(201)
   async createUser(@Body() body: CreateStudentBody) {
     let { id, name, email, password } = body;
 
@@ -39,13 +41,13 @@ export class AppController {
     console.log('hashed of senha is: ' + hash)
 
     copy.password = hash;
-    console.log(copy.password)
 
     const { student } = await this.createStudent.execute({...copy});
     return {student: StudentViewModel.toHTTP(student)};
   }
 
   @Post('create/question')
+  @HttpCode(201)
   async createQuestionView(@Body() body: CreateQuestionBody) {
     const {id, year, title, topic, subject, imagepath, institution, alternatives } = body;
 
@@ -63,6 +65,7 @@ export class AppController {
   }
 
   @Post('create/response')
+  @HttpCode(201)
   async createResponse(@Body() body: CreateStudentQuestionBody) {
     const { id, inTime, studentId, questionId, correctlyAnswered} = body;
 
@@ -75,4 +78,6 @@ export class AppController {
     });
     return {response: StudentQuestionViewModel.toHTTP(questionTaken)}
   }
+
+
 }

@@ -14,7 +14,7 @@ export class PrismaStudentRepository implements StudentRepository {
 
         await this.prisma.studentRecord.create({
             data: raw,
-        })
+        }) 
     }
 
     async changeEmail(StudentId: string): Promise<void> {

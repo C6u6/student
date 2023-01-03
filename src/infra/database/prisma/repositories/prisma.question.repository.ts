@@ -1,8 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { QuestionEntity } from 'src/app/entities/question';
 import { QuestionRepository } from '../../../../app/repositories/question.repository'
 import { PrismaQuestionMappper } from '../mappers/prisma.questions.mapper';
 import { PrismaService } from '../prisma.service';
 
+@Injectable()
 export class PrismaQuestionRepository implements QuestionRepository {
     constructor(private prisma: PrismaService) {}
 
@@ -12,6 +14,7 @@ export class PrismaQuestionRepository implements QuestionRepository {
         await this.prisma.questionRecord.create({
             data: raw,
         })
+
     }
     async findQuestionById(questionId: string): Promise<QuestionEntity | null> {
         const question = await this.prisma.questionRecord.findUnique({

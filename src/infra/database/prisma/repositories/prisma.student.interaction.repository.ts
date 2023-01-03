@@ -1,8 +1,10 @@
+import { Injectable } from "@nestjs/common";
 import { StudentQuestionEntity } from "src/app/entities/student.question";
 import { StudentQuestionRepository } from "src/app/repositories/student.question.repository";
 import { PrismaStudentInteractionMappper } from "../mappers/prisma.student.interaction.mapper";
 import { PrismaService } from "../prisma.service";
 
+@Injectable()
 export class PrismaStudentInteractionRepository implements StudentQuestionRepository {
     constructor(private prisma: PrismaService) {}
 
