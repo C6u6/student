@@ -13,17 +13,17 @@ export class CreateQuestion {
     async execute(request: QuestionEntity): Promise<CreateQuestionResponse> {
         const {
             institution, subject, topic, title,
-            year, alternatives, image
+            year, alternatives, imagepath
         } = request;
 
         const question = new Question({
+            alternatives, 
             institution, 
+            imagepath,
             subject, 
             topic, 
             title,
             year, 
-            alternatives, 
-            image,
     });
 
         await this.questionRepository.create(question)

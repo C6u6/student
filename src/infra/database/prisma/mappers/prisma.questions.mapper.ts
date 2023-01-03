@@ -8,8 +8,8 @@ export class PrismaQuestionMappper {
             year: question.year,
             title: question.title,
             topic: question.topic,
-            image: question.image,
             subject: question.subject,
+            imagepath: question.imagepath,
             institution: question.institution,
             alternatives: question.alternatives,
         };
@@ -20,8 +20,8 @@ export class PrismaQuestionMappper {
             year: raw.year,
             title: raw.title,
             topic: raw.topic,
-            image: raw.image,
             subject: raw.subject,
+            imagepath: raw.imagepath,
             institution: raw.institution,
             alternatives: raw.alternatives,
         });

@@ -6,9 +6,9 @@ export interface QuestionEntity {
     title: string,
     topic: string,
     subject: string,
+    imagepath: string,
     institution: string,
     alternatives: string,
-    image?: string | null,
 };
 
 export class Question {
@@ -74,11 +74,11 @@ export class Question {
         this.props.alternatives = newAlternatives;
     }
 
-    public get image() {
-        return this.props.image;
+    public get imagepath() {
+        return this.props.imagepath;
     }
 
-    public set image(newImage) {
-        this.props.image = newImage;
+    public set imagepath(newImage) {
+        this.props.imagepath = newImage;
     }
 }

@@ -10,7 +10,7 @@ describe('Question', () => {
             institution: 'Example Inst',
             topic: 'Spiders',
             year: 2024,
-            image: null,
+            imagepath: '',
         });
 
         expect(question).toBeTruthy();

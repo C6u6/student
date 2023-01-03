@@ -47,7 +47,7 @@ export class AppController {
 
   @Post('create/question')
   async createQuestionView(@Body() body: CreateQuestionBody) {
-    const {id, year, title, topic, subject, image, institution, alternatives } = body;
+    const {id, year, title, topic, subject, imagepath, institution, alternatives } = body;
 
     const { question } = await this.createQuestion.execute({
       id,
@@ -55,6 +55,7 @@ export class AppController {
       title,
       topic, 
       subject,
+      imagepath,
       institution,
       alternatives 
     });

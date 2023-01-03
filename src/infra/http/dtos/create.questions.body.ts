@@ -14,10 +14,11 @@ export class CreateQuestionBody {
     @IsNotEmpty()
     topic: string;
 
-    image: string | null | undefined;
-
     @IsNotEmpty()
     subject: string;
+
+    @IsNotEmpty()
+    imagepath: string;
 
     @IsNotEmpty()
     institution: string;

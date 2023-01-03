@@ -7,8 +7,8 @@ export class QuestionViewModel {
             year: question.year,
             title: question.title,
             topic: question.topic,
-            image: question.image,
             subject: question.subject,
+            imagepath: question.imagepath,
             institution: question.institution,
             alternatives: question.alternatives,
         };
