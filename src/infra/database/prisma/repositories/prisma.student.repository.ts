@@ -33,7 +33,7 @@ export class PrismaStudentRepository implements StudentRepository {
         });
 
         if (!student) {
-            return null
+            return null;
         };
 
         return PrismaStudentMappper.toDomain(student);

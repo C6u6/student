@@ -1,3 +1,4 @@
+import { StudentNotFound } from "@app/use-cases/errors/errors";
 import { Student, StudentEntity } from "src/app/entities/student";
 import { StudentRepository } from "src/app/repositories/student.repository";
 
@@ -25,7 +26,7 @@ export class InMemoryStudentRepository implements StudentRepository {
             (item) => (item.id === studentId)
         );
 
-        if (!student) return null;
+        if (!student) throw new StudentNotFound();
 
         student.email = newEmail;
     }
@@ -35,7 +36,7 @@ export class InMemoryStudentRepository implements StudentRepository {
             (item) => (item.id === studentId)
         );
 
-        if (!student) return null;
+        if (!student)  throw new StudentNotFound();
 
         // Including crypto module
         var crypto = require('crypto');

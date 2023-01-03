@@ -2,12 +2,13 @@ import { Injectable } from "@nestjs/common";
 import { StudentEntity } from "src/app/entities/student";
 import { StudentRepository } from "src/app/repositories/student.repository";
 import { StudentNotFound } from "../errors/errors";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class ChangePassword {
     constructor(private studentRepository: StudentRepository) {}
 
-    async execute(request: StudentEntity): Promise<void> {
+    async execute(request: Omit<StudentEntity, 'name' | 'email'>): Promise<void> {
         const { id, password } = request;
 
         const student = await this.studentRepository.findById(id);
@@ -15,19 +16,8 @@ export class ChangePassword {
         if (!student) throw new StudentNotFound();
 
         // Hashing the password
+        const hash = bcrypt.hashSync(password, 10);
 
-        // Including crypto module
-        var crypto = require('crypto');
-        const salt = new Uint32Array(7);
-        let passwordHash;
-        
-        // Calling scrypt method with some of its parameter
-        crypto.scrypt(password, salt,  16, (err, derivedKey) => {
-            if (err) throw err;
-            // Defining the hashed password
-            passwordHash = derivedKey;
-        });
-
-        student.password = passwordHash;
+        student.password = hash;
     }
 }

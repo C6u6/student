@@ -27,7 +27,7 @@ describe('Change student email', () => {
         expect(() => {
             return changedEmail.execute({
                 id: 'fake-notification-id',
-                email: 'something@example.com'
+                email: 'something@example.com',
             });
         }).rejects.toThrow(StudentNotFound);
     })

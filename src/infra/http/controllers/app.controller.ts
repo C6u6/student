@@ -1,4 +1,4 @@
-import { Controller, Param, Get, Post, Body, HttpCode } from '@nestjs/common';
+import { Controller, Param, Get, Post, Body, HttpCode, Patch } from '@nestjs/common';
 import { CreateStudent } from 'src/app/use-cases/student/create.user';
 import { CreateQuestion } from '@app/use-cases/question/create.question';
 import { CreateQuestionBody } from '../dtos/create.questions.body';
@@ -8,15 +8,17 @@ import { StudentViewModel } from '../view-models/student.view.module';
 import { QuestionViewModel } from '../view-models/question.view.model';
 import { RespondToQuestion } from '@app/use-cases/student-and-question/respond.to.question';
 import { StudentQuestionViewModel } from '../view-models/student.and.question';
+import { ChangeEmail } from '@app/use-cases/student/change.student.email';
+import { ChangePassword } from '@app/use-cases/student/change.student.password';
 import * as bcrypt from 'bcrypt';
-import { PrismaClient } from '@prisma/client';
 
 
 @Controller()
 export class AppController {
   constructor(
     private createStudent: CreateStudent, private createQuestion: CreateQuestion,
-    private createStudentQuestion: RespondToQuestion
+    private createStudentQuestion: RespondToQuestion, private changeEmail: ChangeEmail,
+    private changePassword: ChangePassword
     ) {};
 
   @Get()
@@ -38,7 +40,6 @@ export class AppController {
 
     // Hashing the password
     const hash = bcrypt.hashSync(copy.password, 10);
-    console.log('hashed of senha is: ' + hash)
 
     copy.password = hash;
 
@@ -79,5 +80,20 @@ export class AppController {
     return {response: StudentQuestionViewModel.toHTTP(questionTaken)}
   }
 
+  @Patch('changepassword/:id/:newEmail')
+  async alterEmailView(@Param('id') id: string, @Param('newEmail') newEmail: string): Promise<void> {
+    this.changeEmail.execute({
+      id: id,
+      email: newEmail,
+    })
+  }
+
+  @Patch('changepassword/:id/:newPassword')
+  async alterPasswordView(@Param('id') id: string, @Param('newPassword') newPassword: string): Promise<void> {
+    this.changePassword.execute({
+      id: id,
+      password: newPassword
+    })
+  }
 
 }
