@@ -13,21 +13,7 @@ export class Student {
 
     constructor(props: Omit<StudentEntity, 'id'>, id?: string) {
         this._id = id ?? randomUUID();
-        this.props = props;
-
-        // Including crypto module
-        var crypto = require('crypto');
-        const salt = new Uint32Array(7);
-        let passwordHash;
-        
-        // Calling scrypt method with some of its parameter
-        crypto.scrypt(props.password, salt,  16, (err, derivedKey) => {
-            if (err) throw err;
-            // Defining the hashed password
-            passwordHash = derivedKey;
-        });
-        
-        this.props.password = passwordHash;
+        this.props = props;        
     }
 
     public get id() {

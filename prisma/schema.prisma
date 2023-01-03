@@ -22,7 +22,7 @@ model QuestionRecord {
   id                    String                  @id
   institution           String
   title                 String
-  imagepath             String?
+  imagepath             String
   alternatives          String
   subject               String
   topic                 String

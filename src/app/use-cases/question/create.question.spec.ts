@@ -4,7 +4,6 @@ import { Question } from "src/app/entities/question";
 describe('Question', () => {
     it('should be able to create a question', () => {
         const question = new Question({
-            id: randomUUID(),
             title: 'Can spiders fly?',
             subject: 'SillyQuestion',
             alternatives: 'A) Yes B) NO',

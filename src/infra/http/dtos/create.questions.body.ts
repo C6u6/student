@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsUUID, Length } from "class-validator";
+import { IsNotEmpty, IsUUID } from "class-validator";
 
 export class CreateQuestionBody {
     @IsNotEmpty()
@@ -6,17 +6,22 @@ export class CreateQuestionBody {
     id: string;
 
     @IsNotEmpty()
-    questionYear: string;
+    year: number;
 
     @IsNotEmpty()
-    questionTitle: string;
+    title: string;
 
     @IsNotEmpty()
-    questionTopic: string;
+    topic: string;
+
+    image: string | null | undefined;
 
     @IsNotEmpty()
-    questionInstitution: string;
+    subject: string;
 
     @IsNotEmpty()
-    questionAlternatives: string;
+    institution: string;
+
+    @IsNotEmpty()
+    alternatives: string;
 }

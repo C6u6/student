@@ -5,7 +5,7 @@ export class RespondToQuestion {
     constructor(private studentInteractionRepository: StudentQuestionRepository) {}
 
     async execute(request: StudentQuestionEntity) {
-        const { questionId, studentId, inTime, correctlyAnswered} = request;
+        const { questionId, studentId, inTime, correctlyAnswered } = request;
 
         const questionTaken = new StudentQuestion({  
             studentId,
@@ -15,5 +15,7 @@ export class RespondToQuestion {
         });
 
         await this.studentInteractionRepository.create(questionTaken);
+
+        return { questionTaken };
     }
 }

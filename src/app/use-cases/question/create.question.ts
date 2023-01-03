@@ -12,7 +12,7 @@ export class CreateQuestion {
 
     async execute(request: QuestionEntity): Promise<CreateQuestionResponse> {
         const {
-            institution, subject, topic, id, title,
+            institution, subject, topic, title,
             year, alternatives, image
         } = request;
 
