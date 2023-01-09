@@ -1,4 +1,5 @@
 import { CreateQuestion } from "@app/use-cases/question/create.question";
+import { ReturnQuestions } from "@app/use-cases/question/return.questions";
 import { RespondToQuestion } from "@app/use-cases/student-and-question/respond.to.question";
 import { ChangeEmail } from "@app/use-cases/student/change.student.email";
 import { ChangePassword } from "@app/use-cases/student/change.student.password";
@@ -16,6 +17,7 @@ import { AppController } from "./controllers/app.controller";
         RespondToQuestion,
         ChangeEmail,
         ChangePassword,
+        ReturnQuestions,
     ]
 })
 

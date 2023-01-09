@@ -11,6 +11,7 @@ import { StudentQuestionViewModel } from '../view-models/student.and.question';
 import { ChangeEmail } from '@app/use-cases/student/change.student.email';
 import { ChangePassword } from '@app/use-cases/student/change.student.password';
 import * as bcrypt from 'bcrypt';
+import { ReturnQuestions } from '@app/use-cases/question/return.questions';
 
 
 @Controller()
@@ -18,16 +19,39 @@ export class AppController {
   constructor(
     private createStudent: CreateStudent, private createQuestion: CreateQuestion,
     private createStudentQuestion: RespondToQuestion, private changeEmail: ChangeEmail,
-    private changePassword: ChangePassword
+    private changePassword: ChangePassword, private returnQuestions: ReturnQuestions,
     ) {};
 
-  @Get()
-  async returnemptylist() {
+  @Get('students-record/')
+  async studentsList() {
+    return 'You are on get route.'
+  }
+
+  @Get('question-library/')
+  async questionsList(
+    @Param('year') year: number, @Param('title') title: string, @Param('topic') topic: string,
+    @Param('subject') subject: string, @Param('institution') institution: string
+    ) {
+    // Pass only the fields that are not invalid
+    const allFields = [year, title, topic, subject, institution];
+    let validFields = {};
+
+    // Validate now
+    allFields.forEach( item => {
+      if (!item) return;
+      validFields[item] = item;
+    });
+
+    const questions = await this.returnQuestions.execute(validFields);
+    return questions;
+  }
+
+  @Get('students-and-questions/')
+  async studentQuestionList() {
     return 'You are on get route.'
   }
 
   @Post('create/student')
-  @HttpCode(201)
   async createUser(@Body() body: CreateStudentBody) {
     let { id, name, email, password } = body;
 
@@ -48,7 +72,6 @@ export class AppController {
   }
 
   @Post('create/question')
-  @HttpCode(201)
   async createQuestionView(@Body() body: CreateQuestionBody) {
     const {id, year, title, topic, subject, imagepath, institution, alternatives } = body;
 
@@ -66,7 +89,6 @@ export class AppController {
   }
 
   @Post('create/response')
-  @HttpCode(201)
   async createResponse(@Body() body: CreateStudentQuestionBody) {
     const { id, inTime, studentId, questionId, correctlyAnswered} = body;
 

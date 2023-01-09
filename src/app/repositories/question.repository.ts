@@ -9,4 +9,5 @@ export abstract class QuestionRepository {
     abstract findQuestionsBySubject(subject: string): Promise<QuestionEntity[] | null>;
     abstract findQuestionsByInstitution(institution: string): Promise<QuestionEntity[] | null>;
     abstract findQuestionsBySubjectAndTopic(subject: string, topic: string): Promise<QuestionEntity[] | null>;
+    abstract findQuestions(props: Partial<QuestionEntity>): Promise<QuestionEntity | QuestionEntity[] | null>;
 }

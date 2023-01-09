@@ -2,6 +2,7 @@ import { makeStudent } from "test/factories/student.factories";
 import { InMemoryStudentRepository } from "test/repositories/in.memory.repository.student";
 import { StudentNotFound } from "../errors/errors";
 import { ChangePassword } from "./change.student.password";
+import * as bcrypt from 'bcrypt';
 
 describe('Change student email', () => {
     it('should be able to change the student password', async () => {
@@ -17,19 +18,8 @@ describe('Change student email', () => {
             password: 'securistpassword',
         });
 
-        // Including crypto module
-        var crypto = require('crypto');
-        const salt = new Uint32Array(7);
-        let passwordHash;
-        
-        // Calling scrypt method with some of its parameter
-        crypto.scrypt('securistpassword', salt,  16, (err, derivedKey) => {
-            if (err) throw err;
-            // Defining the hashed password
-            passwordHash = derivedKey;
-        });
 
-        expect(studentRepository.students[0].password).toEqual(passwordHash);
+        expect(bcrypt.compareSync('securistpassword', studentRepository.students[0].password)).toBeTruthy();
     });
 
     it('should not be able to change an email of a non-existing student', () => {

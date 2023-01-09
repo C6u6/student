@@ -93,5 +93,21 @@ export class PrismaQuestionRepository implements QuestionRepository {
         if (!questions) return null;
 
         return questions.map(PrismaQuestionMappper.toDomain);
-    }   
+    }
+    async findQuestions(props: Partial<QuestionEntity>): Promise<QuestionEntity | QuestionEntity[] | null> {
+        if ((Object.keys(props)).length === 0) {
+            const questions = await this.prisma.questionRecord.findMany();
+            if (!questions) return null;
+
+            return questions.map(PrismaQuestionMappper.toDomain);
+        }
+
+        const questions = await this.prisma.questionRecord.findMany({
+            where: props,
+        });
+
+        if (!questions) return null;
+
+        return questions.map(PrismaQuestionMappper.toDomain);
+    }
 }
