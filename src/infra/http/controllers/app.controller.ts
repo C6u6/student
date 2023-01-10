@@ -13,6 +13,14 @@ import { ChangePassword } from '@app/use-cases/student/change.student.password';
 import * as bcrypt from 'bcrypt';
 import { ReturnQuestions } from '@app/use-cases/question/return.questions';
 
+interface ValidFields {
+  year: number,
+  title: string,
+  topic: string,
+  subject: string,
+  institution: string
+}
+
 
 @Controller()
 export class AppController {
@@ -28,19 +36,25 @@ export class AppController {
   }
 
   @Get('question-library/')
+  async everyQuestionsList() {
+    const questions = await this.returnQuestions.execute({});
+    return questions;
+  }
+
+  @Get('question-library/:year?/:topic?/:subject?/:intitution?')
   async questionsList(
-    @Param('year') year: number, @Param('title') title: string, @Param('topic') topic: string,
+    @Param('year') year: number, @Param('topic') topic: string,
     @Param('subject') subject: string, @Param('institution') institution: string
     ) {
     // Pass only the fields that are not invalid
-    const allFields = [year, title, topic, subject, institution];
-    let validFields = {};
+    const allFields = [year, topic, subject, institution];
+    let validFields: Partial<ValidFields> = {};
 
-    // Validate now
-    allFields.forEach( item => {
-      if (!item) return;
-      validFields[item] = item;
-    });
+    // Validate data 
+    if (year) {validFields.year = Number(year)};
+    if (topic) {validFields.topic = topic};
+    if (subject) {validFields.subject = subject};
+    if (institution) {validFields.institution = institution};
 
     const questions = await this.returnQuestions.execute(validFields);
     return questions;
