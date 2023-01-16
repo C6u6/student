@@ -17,7 +17,7 @@ export class CreateStudent {
             name,
             email,
             password,
-    });
+        });
 
         await this.studentRepository.create(student)
 

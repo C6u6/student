@@ -1,6 +1,5 @@
 import { Question, QuestionEntity } from "src/app/entities/question";
 
-
 export class PrismaQuestionMappper {
     static toPrisma(question: QuestionEntity) {
         return {

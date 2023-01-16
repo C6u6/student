@@ -24,9 +24,9 @@ export class CreateQuestion {
             topic, 
             title,
             year, 
-    });
+        });
 
-        await this.questionRepository.create(question)
+        await this.questionRepository.create(question);
 
         return { question };
     }

@@ -11,13 +11,13 @@ export class ChangePassword {
     async execute(request: Omit<StudentEntity, 'name' | 'email'>): Promise<void> {
         const { id, password } = request;
 
-        const student = await this.studentRepository.findById(id);
+        const student = await this.studentRepository.findStudents({id: id});
 
         if (!student) throw new StudentNotFound();
 
         // Hashing the password
         const hash = bcrypt.hashSync(password, 10);
 
-        student.password = hash;
+        student[0].password = hash;
     }
 }

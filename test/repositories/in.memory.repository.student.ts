@@ -1,4 +1,5 @@
 import { StudentNotFound } from "@app/use-cases/errors/errors";
+import { checkValuesInProps } from "@helpers/filter.array.accordingly.to.props";
 import { Student, StudentEntity } from "src/app/entities/student";
 import { StudentRepository } from "src/app/repositories/student.repository";
 
@@ -9,16 +10,24 @@ export class InMemoryStudentRepository implements StudentRepository {
         this.students.push(student);
     }
 
-    async findById(studentId: string): Promise<StudentEntity | null> {
-        const student = this.students.find(
-            (item) => (item.id === studentId)
+    async findStudents(props: Partial<StudentEntity>): Promise<Student | Student[] | null> {
+        // Return the whole array
+        if ((Object.keys(props)).length === 0) {
+            if (!this.students) return null;
+
+            return this.students;
+        }
+        
+        // Filter in order to get those who props properties matches with its own
+        const students = this.students.filter(item => 
+            checkValuesInProps(props, item)
         );
 
-        if (!student) {
+        if (!students) {
             return null;
         }
 
-        return student;
+        return students;
     }
 
     async changeEmail(studentId: string, newEmail: string): Promise<void> {
@@ -35,21 +44,5 @@ export class InMemoryStudentRepository implements StudentRepository {
         const student = this.students.find(
             (item) => (item.id === studentId)
         );
-
-        if (!student)  throw new StudentNotFound();
-
-        // Including crypto module
-        var crypto = require('crypto');
-        const salt = new Uint32Array(7);
-        let passwordHash;
-        
-        // Calling scrypt method with some of its parameter
-        crypto.scrypt(newPassword, salt,  16, (err, derivedKey) => {
-            if (err) throw err;
-            // Defining the hashed password
-            passwordHash = derivedKey;
-        });
-
-        student.password = passwordHash;
     }
 }

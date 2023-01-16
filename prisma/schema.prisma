@@ -20,13 +20,13 @@ model StudentRecord {
 
 model QuestionRecord {
   id                    String                  @id
-  institution           String
-  title                 String
-  imagepath             String
-  alternatives          String
-  subject               String
-  topic                 String
   year                  Int
+  title                 String
+  topic                 String
+  subject               String
+  imagepath             String
+  institution           String
+  alternatives          String
   StudentQuestionRecord StudentQuestionRecord[]
 }
 

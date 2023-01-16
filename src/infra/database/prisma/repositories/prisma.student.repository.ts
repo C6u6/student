@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Student } from "../../../../app/entities/student";
+import { Student, StudentEntity } from "../../../../app/entities/student";
 import { StudentRepository } from "../../../../app/repositories/student.repository";
 import { PrismaStudentMappper } from "../mappers/prisma.student.mapper";
 import { PrismaService } from "../prisma.service";
@@ -25,17 +25,13 @@ export class PrismaStudentRepository implements StudentRepository {
         // To be implemented
     }
 
-    async findById(studentId: string): Promise<Student | null> {
-        const student = await this.prisma.studentRecord.findUnique({
-            where: {
-                id: studentId,
-            },
+    async findStudents(props: Partial<StudentEntity>): Promise<Student | Student[] | null> {
+        const students = await this.prisma.studentRecord.findMany({
+            where: props
         });
 
-        if (!student) {
-            return null;
-        };
+        if (!students) null;
 
-        return PrismaStudentMappper.toDomain(student);
+        return students.map(PrismaStudentMappper.toDomain);
     }
 }

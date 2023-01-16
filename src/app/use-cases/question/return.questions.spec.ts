@@ -1,10 +1,10 @@
-import { Question, QuestionEntity } from "@app/entities/question";
 import { makeQuestion } from "@test/factories/question.factories";
 import { InMemoryQuestionRepository } from "@test/repositories/in.memory.repository.question";
+import { CreateQuestion } from "./create.question";
 import { ReturnQuestions } from "./return.questions";
 
-describe('return all question', () => {
-    it('should be able to return as many questions as possible', () => {
+describe('return question', () => {
+    it('should be able to return any question that has properties that match the props', () => {
         // specific info for creating some questions
         const info = [
             {
@@ -44,19 +44,26 @@ describe('return all question', () => {
         
         const questionRepository = new InMemoryQuestionRepository();
         const returnQuestions = new ReturnQuestions(questionRepository);
+        const createQuestion = new CreateQuestion(questionRepository);
         
         // Generate many similar questions
         info.forEach( props => {
             let question = makeQuestion({...props});
-            new Question(question);
+            createQuestion.execute(question);
         });
-
-        // Check question in returnQuestions
-        function findQuestionsThathaveThatPropeties(props: Partial<QuestionEntity>) {
-            return returnQuestions.execute(props);
-        };
         
-        expect(findQuestionsThathaveThatPropeties(info[0])).toEqual(3);
+        expect(returnQuestions.execute(info[0])).toBeTruthy();
 
+        // With this props, an empty object will be retrived
+        let nonExistingQuestion = {
+            topic: 'Does not exist',
+            year: 1000,
+            institution: 'No question with this'
+        };
+
+        // Expected an empty object
+        let keys = Object.keys(returnQuestions.execute(nonExistingQuestion));
+
+        expect(keys.length).toEqual(0);
     });
 });

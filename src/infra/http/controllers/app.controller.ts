@@ -1,4 +1,4 @@
-import { Controller, Param, Get, Post, Body, HttpCode, Patch } from '@nestjs/common';
+import { Controller, Param, Get, Post, Body, Patch, Query, Session, Req, UseGuards, BadRequestException } from '@nestjs/common';
 import { CreateStudent } from 'src/app/use-cases/student/create.user';
 import { CreateQuestion } from '@app/use-cases/question/create.question';
 import { CreateQuestionBody } from '../dtos/create.questions.body';
@@ -12,15 +12,10 @@ import { ChangeEmail } from '@app/use-cases/student/change.student.email';
 import { ChangePassword } from '@app/use-cases/student/change.student.password';
 import * as bcrypt from 'bcrypt';
 import { ReturnQuestions } from '@app/use-cases/question/return.questions';
-
-interface ValidFields {
-  year: number,
-  title: string,
-  topic: string,
-  subject: string,
-  institution: string
-}
-
+import { ReturnStudents } from '@app/use-cases/student/return.student';
+import { StudentEntity } from '@app/entities/student';
+import { QuestionEntity } from '@app/entities/question';
+import { LoginRequired } from '../decorators/login.required.decorator';
 
 @Controller()
 export class AppController {
@@ -28,45 +23,44 @@ export class AppController {
     private createStudent: CreateStudent, private createQuestion: CreateQuestion,
     private createStudentQuestion: RespondToQuestion, private changeEmail: ChangeEmail,
     private changePassword: ChangePassword, private returnQuestions: ReturnQuestions,
+    private returnStudents: ReturnStudents,
     ) {};
 
   @Get('students-record/')
-  async studentsList() {
-    return 'You are on get route.'
+  async studentsList(@Query() props: Partial<StudentEntity>) {
+    const students = this.returnStudents.execute(props);
+    return students;
   }
 
   @Get('question-library/')
-  async everyQuestionsList() {
-    const questions = await this.returnQuestions.execute({});
-    return questions;
-  }
-
-  @Get('question-library/:year?/:topic?/:subject?/:intitution?')
-  async questionsList(
-    @Param('year') year: number, @Param('topic') topic: string,
-    @Param('subject') subject: string, @Param('institution') institution: string
-    ) {
-    // Pass only the fields that are not invalid
-    const allFields = [year, topic, subject, institution];
-    let validFields: Partial<ValidFields> = {};
-
-    // Validate data 
-    if (year) {validFields.year = Number(year)};
-    if (topic) {validFields.topic = topic};
-    if (subject) {validFields.subject = subject};
-    if (institution) {validFields.institution = institution};
-
-    const questions = await this.returnQuestions.execute(validFields);
+  async questionsList(@Query() props: Partial<QuestionEntity>) {
+    const questions = await this.returnQuestions.execute(props);
     return questions;
   }
 
   @Get('students-and-questions/')
   async studentQuestionList() {
     return 'You are on get route.'
+  };
+
+  @Get()
+  /* @UseGuards(LoginRequired) */
+  async account() {
+    return "You're in the account route";
+  };
+
+  @Get('login')
+  async login(@Session() session) {
+    return `The last user had id equal to ${session.userId}`;
+  }
+
+  @Post('logout')
+  async logout() {
+    return 'so'
   }
 
   @Post('create/student')
-  async createUser(@Body() body: CreateStudentBody) {
+  async createUser(@Body() body: CreateStudentBody, @Req() request) {
     let { id, name, email, password } = body;
 
     let copy = {
@@ -76,12 +70,19 @@ export class AppController {
       password: password
     }
 
+    // Check whether the email is unique
+    const potentialStudentWithReceivedEmail = this.returnStudents.execute({email: copy.email});
+    if (await potentialStudentWithReceivedEmail) throw new BadRequestException('Email entered was already registered');
+
     // Hashing the password
     const hash = bcrypt.hashSync(copy.password, 10);
-
     copy.password = hash;
 
     const { student } = await this.createStudent.execute({...copy});
+
+    // Store the id of the user
+    request.session.set('userId', student._id);
+
     return {student: StudentViewModel.toHTTP(student)};
   }
 
@@ -104,7 +105,7 @@ export class AppController {
 
   @Post('create/response')
   async createResponse(@Body() body: CreateStudentQuestionBody) {
-    const { id, inTime, studentId, questionId, correctlyAnswered} = body;
+    const { id, inTime, studentId, questionId, correctlyAnswered } = body;
 
     const { questionTaken } = await this.createStudentQuestion.execute({
       id,
@@ -116,7 +117,7 @@ export class AppController {
     return {response: StudentQuestionViewModel.toHTTP(questionTaken)}
   }
 
-  @Patch('changepassword/:id/:newEmail')
+  /* @Patch('changepassword/:id/:newEmail')
   async alterEmailView(@Param('id') id: string, @Param('newEmail') newEmail: string): Promise<void> {
     this.changeEmail.execute({
       id: id,
@@ -130,6 +131,5 @@ export class AppController {
       id: id,
       password: newPassword
     })
-  }
-
+  } */
 }

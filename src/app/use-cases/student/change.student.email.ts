@@ -10,10 +10,10 @@ export class ChangeEmail {
     async execute(request: Omit<StudentEntity, 'name' | 'password'>): Promise<void> {
         const { id, email } = request;
 
-        const student = await this.studentRepository.findById(id);
+        const student = await this.studentRepository.findStudents({id: id});
 
         if (!student) throw new StudentNotFound();
 
-        student.email = email;
+        student[0].props.email = email;
     }
 }
