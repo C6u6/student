@@ -1,13 +1,14 @@
 import { StudentQuestion, StudentQuestionEntity } from "src/app/entities/student.question";
 
 export class PrismaStudentInteractionMappper {
-    static toPrisma(studentAndQuetion: StudentQuestionEntity) {
+    static toPrisma(studentAndQuestion: StudentQuestionEntity) {
         return {
-            id: studentAndQuetion.id,
-            studentId: studentAndQuetion.studentId,
-            questionId: studentAndQuetion.questionId,
-            correctlyAnswered: studentAndQuetion.correctlyAnswered,
-            inTime: studentAndQuetion.inTime,
+            id: studentAndQuestion.id,
+            studentId: studentAndQuestion.studentId,
+            questionId: studentAndQuestion.questionId,
+            secondsToAnswer: studentAndQuestion.secondsToAnswer,
+            correctlyAnswered: studentAndQuestion.correctlyAnswered,
+            inTime: studentAndQuestion.inTime,
         };
     };
 
@@ -15,6 +16,7 @@ export class PrismaStudentInteractionMappper {
         return new StudentQuestion({
             studentId: raw.studentId,
             questionId: raw.questionId,
+            secondsToAnswer: raw.secondsToAnswer,
             correctlyAnswered: raw.correctlyAnswered,
             inTime: raw.inTime,
         },

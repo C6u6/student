@@ -11,6 +11,7 @@ describe('Respond to question', () => {
             studentId: student.id,
             questionId: question.id,
             correctlyAnswered: true,
+            secondsToAnswer: 100,
             inTime: false,
         });
 

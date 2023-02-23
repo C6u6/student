@@ -10,35 +10,35 @@ describe('return question', () => {
             {
                 title: "This is a silly title",
                 topic: "No criativity",
-                alternatives: "A) Cry B) Not to Cry"
+                alternatives: ["A) Cry", "B) Not to Cry"],
             }, {
                 title: "This is a silly title",
                 topic: "No criativity",
-                alternatives: "A) Cry B) Not to Cry"
+                alternatives: ["A) Cry", "B) Not to Cry"],
             }, {
                 title: "This is a silly title",
                 topic: "No criativity",
-                alternatives: "A) Cry B) Not to Cry"
+                alternatives: ["A) Cry", "B) Not to Cry"],
             }, {
                 title: "How many legs does a human has?",
                 topic: "Human body",
-                alternatives: "A) 2 B) 4"
+                alternatives: ["A) 2", "B) 4"],
             }, {
                 title: "How many legs does a human has?",
                 topic: "Human body",
-                alternatives: "A) 2 B) 6"
+                alternatives: ["A) 2", "B) 6"],
             }, {
                 title: "How many eyes does a human has?",
                 topic: "Human body",
-                alternatives: "A) 2 B) 4"
+                alternatives: ["A) 2", "B) 4"],
             }, {
                 title: "How many eyes does a human has?",
                 topic: "Human body",
-                alternatives: "A) 2 B) 4"
+                alternatives: ["A) 2", "B) 4"],
             }, {
                 title: "Where is located the Himalia?",
                 topic: "Geografy",
-                alternatives: "A) Asia B) Australia"
+                alternatives: ["A) Asia", "B) Australia"]
             }
         ];
         

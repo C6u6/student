@@ -2,9 +2,10 @@ import { randomUUID } from "crypto";
 
 export interface StudentQuestionEntity {
     id: string,
+    inTime: boolean,
     studentId: string,
     questionId: string,
-    inTime: boolean,
+    secondsToAnswer: number,
     correctlyAnswered: boolean,
 }
 
@@ -33,7 +34,23 @@ export class StudentQuestion{
         return this.props.inTime;
     }
 
+    public set inTime(Boolean) {
+        this.props.inTime = Boolean;
+    }
+
     public get correctlyAnswered() {
         return this.props.correctlyAnswered;
+    }
+
+    public set correctlyAnswered(Boolean) {
+        this.props.correctlyAnswered = Boolean;
+    }
+
+    public get secondsToAnswer() {
+        return this.props.secondsToAnswer;
+    }
+
+    public set secondsToAnswer(seconds) {
+        this.props.secondsToAnswer = seconds;
     }
 }

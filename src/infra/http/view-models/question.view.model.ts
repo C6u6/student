@@ -1,7 +1,7 @@
 import { QuestionEntity } from "src/app/entities/question";
 
 export class QuestionViewModel {
-    static toHTTP(question: QuestionEntity) {
+    static toHTTP(question: QuestionEntity, alternativesToAttach: string[]) {
         return {
             id: question.id,
             year: question.year,
@@ -10,7 +10,7 @@ export class QuestionViewModel {
             subject: question.subject,
             imagepath: question.imagepath,
             institution: question.institution,
-            alternatives: question.alternatives,
+            alternatives: alternativesToAttach,
         };
     }
 }

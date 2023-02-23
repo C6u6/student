@@ -24,5 +24,5 @@ export class CreateQuestionBody {
     institution: string;
 
     @IsNotEmpty()
-    alternatives: string;
+    alternatives: string[];
 }

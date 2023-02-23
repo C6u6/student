@@ -1,3 +1,5 @@
+import { CreateQuestionAlternatives } from "@app/use-cases/question-alternatives/create.question.alternatives";
+import { ReturnQuestionsAlternatives } from "@app/use-cases/question-alternatives/return.questions.alternatives";
 import { CreateQuestion } from "@app/use-cases/question/create.question";
 import { ReturnQuestions } from "@app/use-cases/question/return.questions";
 import { RespondToQuestion } from "@app/use-cases/student-and-question/respond.to.question";
@@ -19,7 +21,9 @@ import { AppController } from "./controllers/app.controller";
         ChangeEmail,
         ChangePassword,
         ReturnQuestions,
-        ReturnStudents
+        ReturnStudents,
+        ReturnQuestionsAlternatives,
+        CreateQuestionAlternatives
     ]
 })
 

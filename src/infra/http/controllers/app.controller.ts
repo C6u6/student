@@ -16,6 +16,9 @@ import { ReturnStudents } from '@app/use-cases/student/return.student';
 import { StudentEntity } from '@app/entities/student';
 import { QuestionEntity } from '@app/entities/question';
 import { LoginRequired } from '../decorators/login.required.decorator';
+import { CreateQuestionAlternatives } from '@app/use-cases/question-alternatives/create.question.alternatives';
+import { ReturnQuestionsAlternatives } from '@app/use-cases/question-alternatives/return.questions.alternatives';
+import { QuestionAndAlternatives } from '@helpers/controller.types';
 
 @Controller()
 export class AppController {
@@ -23,7 +26,8 @@ export class AppController {
     private createStudent: CreateStudent, private createQuestion: CreateQuestion,
     private createStudentQuestion: RespondToQuestion, private changeEmail: ChangeEmail,
     private changePassword: ChangePassword, private returnQuestions: ReturnQuestions,
-    private returnStudents: ReturnStudents,
+    private returnStudents: ReturnStudents, private createQuestionAlternatives: CreateQuestionAlternatives,
+    private returnQuestionAlternatives: ReturnQuestionsAlternatives,
     ) {};
 
   @Get('students-record/')
@@ -35,7 +39,18 @@ export class AppController {
   @Get('question-library/')
   async questionsList(@Query() props: Partial<QuestionEntity>) {
     const questions = await this.returnQuestions.execute(props);
-    return questions;
+
+    let questionAndAlternatives: QuestionAndAlternatives;
+    let questionAndAlternativesArray: QuestionAndAlternatives[] = [];
+
+    (questions as unknown as QuestionEntity[])?.map((el, index) => {
+      const alternatives = this.returnQuestionAlternatives.execute(el.id);
+      questionAndAlternatives.question = el;
+      questionAndAlternatives.alternatives = alternatives;
+      questionAndAlternativesArray.push(questionAndAlternatives);
+    });
+
+    return questionAndAlternativesArray;
   }
 
   @Get('students-and-questions/')
@@ -98,20 +113,28 @@ export class AppController {
       subject,
       imagepath,
       institution,
-      alternatives 
     });
-    return {question: QuestionViewModel.toHTTP(question)};
+
+    //
+    await this.createQuestionAlternatives.execute({
+      ownedById: id,
+      alternatives: alternatives,
+      id,
+    });
+
+    return {question: QuestionViewModel.toHTTP(question, alternatives)};
   }
 
   @Post('create/response')
   async createResponse(@Body() body: CreateStudentQuestionBody) {
-    const { id, inTime, studentId, questionId, correctlyAnswered } = body;
+    const { id, inTime, studentId, questionId, secondsToAnswer, correctlyAnswered } = body;
 
     const { questionTaken } = await this.createStudentQuestion.execute({
       id,
       inTime,
       studentId,
       questionId,
+      secondsToAnswer,
       correctlyAnswered
     });
     return {response: StudentQuestionViewModel.toHTTP(questionTaken)}

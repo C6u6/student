@@ -10,7 +10,6 @@ export class PrismaQuestionMappper {
             subject: question.subject,
             imagepath: question.imagepath,
             institution: question.institution,
-            alternatives: question.alternatives,
         };
     };
 
@@ -22,7 +21,6 @@ export class PrismaQuestionMappper {
             subject: raw.subject,
             imagepath: raw.imagepath,
             institution: raw.institution,
-            alternatives: raw.alternatives,
         });
     };
 };

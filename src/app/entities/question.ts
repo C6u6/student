@@ -8,19 +8,17 @@ export interface QuestionEntity {
     subject: string,
     imagepath: string,
     institution: string,
-    alternatives: string,
 };
 
 export class Question {
     public _id: string;
     public props: Omit<QuestionEntity, 'id'>;
 
-
     constructor(props: Omit<QuestionEntity, 'id'>, id?: string) {
         
         this._id = id ?? randomUUID();
         this.props = props;
-    }
+    };
 
     public get id() {
         return this._id;
@@ -66,14 +64,6 @@ export class Question {
         this.props.institution = newInstitution;
     }
 
-    public get alternatives() {
-        return this.props.alternatives;
-    }
-
-    public set alternatives(newAlternatives) {
-        this.props.alternatives = newAlternatives;
-    }
-
     public get imagepath() {
         return this.props.imagepath;
     }
@@ -81,4 +71,4 @@ export class Question {
     public set imagepath(newImage) {
         this.props.imagepath = newImage;
     }
-}
+};

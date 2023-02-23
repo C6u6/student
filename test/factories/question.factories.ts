@@ -8,7 +8,7 @@ export function makeQuestion(override: Override) {
         id: randomUUID(),
         title: 'Can spiders fly?',
         subject: 'SillyQuestion',
-        alternatives: 'A) Yes B) NO',
+        alternatives: ['A) Yes', 'B) NO'],
         institution: 'Example Inst',
         topic: 'Spiders',
         year: 2024,

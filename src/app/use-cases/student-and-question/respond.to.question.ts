@@ -7,12 +7,13 @@ export class RespondToQuestion {
     constructor(private studentInteractionRepository: StudentQuestionRepository) {}
 
     async execute(request: StudentQuestionEntity) {
-        const { questionId, studentId, inTime, correctlyAnswered } = request;
+        const { questionId, studentId, inTime, secondsToAnswer, correctlyAnswered } = request;
 
         const questionTaken = new StudentQuestion({  
             inTime,
             studentId,
             questionId,
+            secondsToAnswer,
             correctlyAnswered,
         });
 

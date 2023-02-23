@@ -6,7 +6,7 @@ describe('Question', () => {
         const question = new Question({
             title: 'Can spiders fly?',
             subject: 'SillyQuestion',
-            alternatives: 'A) Yes B) NO',
+            alternatives: ['A) Yes', 'B) NO'],
             institution: 'Example Inst',
             topic: 'Spiders',
             year: 2024,

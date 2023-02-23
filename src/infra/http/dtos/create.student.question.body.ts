@@ -18,5 +18,8 @@ export class CreateStudentQuestionBody {
     questionId: string;
 
     @IsNotEmpty()
+    secondsToAnswer: number;
+
+    @IsNotEmpty()
     correctlyAnswered: boolean;
 }

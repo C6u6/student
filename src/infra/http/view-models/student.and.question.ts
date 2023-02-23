@@ -6,6 +6,7 @@ export class StudentQuestionViewModel {
             id: studentAndQuestion.id,
             inTime: studentAndQuestion.inTime,
             studentId: studentAndQuestion.studentId,
+            secondsToAnswer: studentAndQuestion.secondsToAnswer,
             questionId: studentAndQuestion.questionId,
             correctlyAnswered: studentAndQuestion.correctlyAnswered,
         };

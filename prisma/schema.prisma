@@ -19,15 +19,26 @@ model StudentRecord {
 }
 
 model QuestionRecord {
-  id                    String                  @id
-  year                  Int
-  title                 String
-  topic                 String
-  subject               String
-  imagepath             String
-  institution           String
-  alternatives          String
-  StudentQuestionRecord StudentQuestionRecord[]
+  id                                  String                                @id
+  year                                Int
+  title                               String
+  topic                               String
+  subject                             String
+  imagepath                           String
+  institution                         String
+  StudentQuestionRecord               StudentQuestionRecord[]
+  QuestionRecordHelperForAlternatives QuestionRecordHelperForAlternatives[]
+}
+
+model QuestionRecordHelperForAlternatives {
+  id           String         @id
+  alternative1 String
+  alternative2 String
+  alternative3 String
+  alternative4 String
+  alternative5 String
+  ownedBy      QuestionRecord @relation(fields: [ownedById], references: [id], onDelete: Cascade)
+  ownedById    String         @unique
 }
 
 model StudentQuestionRecord {
@@ -38,4 +49,5 @@ model StudentQuestionRecord {
   questionId        String
   correctlyAnswered Boolean
   inTime            Boolean
+  secondsToAnswer   Int
 }
