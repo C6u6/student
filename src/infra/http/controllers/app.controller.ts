@@ -18,7 +18,7 @@ import { QuestionEntity } from '@app/entities/question';
 import { LoginRequired } from '../decorators/login.required.decorator';
 import { CreateQuestionAlternatives } from '@app/use-cases/question-alternatives/create.question.alternatives';
 import { ReturnQuestionsAlternatives } from '@app/use-cases/question-alternatives/return.questions.alternatives';
-import { QuestionAndAlternatives } from '@helpers/controller.types';
+import { Add_id_Property, QuestionAndAlternatives } from '@helpers/controller.types';
 
 @Controller()
 export class AppController {
@@ -42,18 +42,35 @@ export class AppController {
 
     let questionAndAlternatives: QuestionAndAlternatives = {
       question: null,
-      alternatives: this.returnQuestionAlternatives.execute(''),
+      alternatives: this.returnQuestionAlternatives.execute('')
     };
     let questionAndAlternativesArray: QuestionAndAlternatives[] = [];
 
-    (questions as unknown as QuestionEntity[])?.map((el) => {
-      const alternatives = this.returnQuestionAlternatives.execute(el.id);
-      questionAndAlternatives.question = el;
-      questionAndAlternatives.alternatives = alternatives;
-      questionAndAlternativesArray.push(questionAndAlternatives);
+    const alternativesPromises = (questions as unknown as (QuestionEntity & Add_id_Property)[])?.map(async (el) => {
+      const alternativesData = await this.returnQuestionAlternatives.execute(el._id);
+      return alternativesData;
+      /* questionAndAlternatives.question = el;
+      questionAndAlternatives.alternatives = {
+        alternative1: alternativesData?.alternative1,
+        alternative2: alternativesData?.alternative2,
+        alternative3: alternativesData?.alternative3,
+        alternative4: alternativesData?.alternative4,
+        alternative5: alternativesData?.alternative5,
+      }; */
+      /* console.log(questionAndAlternatives); */
+      /* questionAndAlternativesArray.push(questionAndAlternatives); */
     });
 
-    return questions/* questionAndAlternativesArray */;
+    
+    (questions as unknown as (QuestionEntity & Add_id_Property)[])?.forEach((el, index) => {
+      questionAndAlternatives.question = el,
+      questionAndAlternatives.alternatives = alternativesPromises[index];
+      
+      questionAndAlternativesArray.push(questionAndAlternatives);
+    });
+    console.log(questionAndAlternativesArray);
+
+    return questionAndAlternativesArray;
   }
 
   @Get('students-and-questions/')
@@ -89,8 +106,10 @@ export class AppController {
     }
 
     // Check whether the email is unique
+
+    // I THINK THIS HAS NO MEANINGFUL UTILITY
     const potentialStudentWithReceivedEmail = await this.returnStudents.execute({email: copy.email});
-    if (length in potentialStudentWithReceivedEmail) {
+    if ("length" in potentialStudentWithReceivedEmail) {
       if (potentialStudentWithReceivedEmail[0] == undefined || Object.keys(potentialStudentWithReceivedEmail[0]).length == 0) {
         return {status: 400, error: 'Email entered was already registered' };
       };

@@ -17,7 +17,7 @@ export class PrismaQuestionAlternativesMappper {
 
         return {
             id: alternatives.id,
-            ownedById: alternatives.ownedBy,
+            ownedById: alternatives.ownedById,
             ...tempObj,
         };
     };

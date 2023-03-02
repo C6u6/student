@@ -27,11 +27,11 @@ export class Alternatives {
         return this.props.alternatives;
     };
 
-    public set ownedBy(questionId: string) {
+    public set ownedById(questionId: string) {
         this.props.ownedById = questionId;
     };
 
-    public get ownedBy() {
+    public get ownedById() {
         return this.props.ownedById;
     };
 };

@@ -22,7 +22,7 @@ export class PrismaQuestionMappper {
             imagepath: raw.imagepath,
             institution: raw.institution,
         },
-        raw._id,
+        raw.id,
         );
     };
 };
