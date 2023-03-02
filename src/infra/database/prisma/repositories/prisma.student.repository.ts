@@ -25,12 +25,12 @@ export class PrismaStudentRepository implements StudentRepository {
         // To be implemented
     }
 
-    async findStudents(props: Partial<StudentEntity>): Promise<Student | Student[] | null> {
+    async findStudents(props: Partial<StudentEntity>): Promise<Student | Student[] | []> {
         const students = await this.prisma.studentRecord.findMany({
             where: props
         });
 
-        if (!students) null;
+        if (!students) return [];
 
         return students.map(PrismaStudentMappper.toDomain);
     }

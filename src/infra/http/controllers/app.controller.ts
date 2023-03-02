@@ -40,17 +40,20 @@ export class AppController {
   async questionsList(@Query() props: Partial<QuestionEntity>) {
     const questions = await this.returnQuestions.execute(props);
 
-    let questionAndAlternatives: QuestionAndAlternatives;
+    let questionAndAlternatives: QuestionAndAlternatives = {
+      question: null,
+      alternatives: this.returnQuestionAlternatives.execute(''),
+    };
     let questionAndAlternativesArray: QuestionAndAlternatives[] = [];
 
-    (questions as unknown as QuestionEntity[])?.map((el, index) => {
+    (questions as unknown as QuestionEntity[])?.map((el) => {
       const alternatives = this.returnQuestionAlternatives.execute(el.id);
       questionAndAlternatives.question = el;
       questionAndAlternatives.alternatives = alternatives;
       questionAndAlternativesArray.push(questionAndAlternatives);
     });
 
-    return questionAndAlternativesArray;
+    return questions/* questionAndAlternativesArray */;
   }
 
   @Get('students-and-questions/')
@@ -86,8 +89,14 @@ export class AppController {
     }
 
     // Check whether the email is unique
-    const potentialStudentWithReceivedEmail = this.returnStudents.execute({email: copy.email});
-    if (await potentialStudentWithReceivedEmail) throw new BadRequestException('Email entered was already registered');
+    const potentialStudentWithReceivedEmail = await this.returnStudents.execute({email: copy.email});
+    if (length in potentialStudentWithReceivedEmail) {
+      if (potentialStudentWithReceivedEmail[0] == undefined || Object.keys(potentialStudentWithReceivedEmail[0]).length == 0) {
+        return {status: 400, error: 'Email entered was already registered' };
+      };
+    }
+
+    if (Object.keys(potentialStudentWithReceivedEmail).length == 0) return {status: 400, error: 'Email entered was already registered' };
 
     // Hashing the password
     const hash = bcrypt.hashSync(copy.password, 10);
@@ -103,10 +112,9 @@ export class AppController {
 
   @Post('create/question')
   async createQuestionView(@Body() body: CreateQuestionBody) {
-    const {id, year, title, topic, subject, imagepath, institution, alternatives } = body;
+    const {year, title, topic, subject, imagepath, institution, alternatives } = body;
 
     const { question } = await this.createQuestion.execute({
-      id,
       year,
       title,
       topic, 
@@ -117,9 +125,8 @@ export class AppController {
 
     //
     await this.createQuestionAlternatives.execute({
-      ownedById: id,
+      ownedById: question.id,
       alternatives: alternatives,
-      id,
     });
 
     return {question: QuestionViewModel.toHTTP(question, alternatives)};

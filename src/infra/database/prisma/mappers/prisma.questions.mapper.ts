@@ -13,7 +13,7 @@ export class PrismaQuestionMappper {
         };
     };
 
-    static toDomain(raw: QuestionEntity) {
+    static toDomain(raw) {
         return new Question({
             year: raw.year,
             title: raw.title,
@@ -21,6 +21,8 @@ export class PrismaQuestionMappper {
             subject: raw.subject,
             imagepath: raw.imagepath,
             institution: raw.institution,
-        });
+        },
+        raw._id,
+        );
     };
 };

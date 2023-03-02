@@ -53,7 +53,7 @@ export class Question {
     }
 
     public set year(newYear) {
-        this.props.year = newYear
+        this.props.year = newYear;
     }
 
     public get institution() {

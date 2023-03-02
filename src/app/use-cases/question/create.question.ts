@@ -10,7 +10,7 @@ interface CreateQuestionResponse {
 export class CreateQuestion {
     constructor(private questionRepository: QuestionRepository) {}
 
-    async execute(request: QuestionEntity): Promise<CreateQuestionResponse> {
+    async execute(request: Omit<QuestionEntity, 'id'>): Promise<CreateQuestionResponse> {
         const {
             institution, subject, topic, title,
             year, imagepath

@@ -10,10 +10,10 @@ export class InMemoryStudentRepository implements StudentRepository {
         this.students.push(student);
     }
 
-    async findStudents(props: Partial<StudentEntity>): Promise<Student | Student[] | null> {
+    async findStudents(props: Partial<StudentEntity>): Promise<Student | Student[] | []> {
         // Return the whole array
         if ((Object.keys(props)).length === 0) {
-            if (!this.students) return null;
+            if (!this.students) return [];
 
             return this.students;
         }
@@ -24,7 +24,7 @@ export class InMemoryStudentRepository implements StudentRepository {
         );
 
         if (!students) {
-            return null;
+            return [];
         }
 
         return students;

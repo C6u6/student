@@ -18,7 +18,7 @@ export class PrismaQuestionAlternativesRepository implements QuestionAlternative
     };
 
     async findAlternatives(id: string): Promise<QuestionRecordHelperForAlternatives | null> {
-        const alternatives = this.prisma.questionRecordHelperForAlternatives.findUnique({
+        const alternatives = await this.prisma.questionRecordHelperForAlternatives.findUnique({
             where: {
                 ownedById: id
             }

@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 
 export interface AlternativesEntity {
-    id: string,
+    id?: string,
     ownedById: string,
     alternatives: string[],
 }

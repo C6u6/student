@@ -10,8 +10,9 @@ export class PrismaQuestionAlternativesMappper {
             alternative5: '',
         };
 
+        const tempObjProperties = Object.keys(tempObj);
         alternatives.alternativesSet.forEach((el, index) => {
-            tempObj[alternatives[index + 1]] = el; 
+            tempObj[tempObjProperties[index]] = el; 
         });
 
         return {

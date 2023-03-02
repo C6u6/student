@@ -7,8 +7,8 @@ export class ReturnStudents {
     constructor(private studentRepository: StudentRepository) {}
 
     async execute(props: Partial<StudentEntity>) {
-        const questions = await this.studentRepository.findStudents(props);
+        const students = await this.studentRepository.findStudents(props);
 
-        return questions;
+        return students;
     }
 }
