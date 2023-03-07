@@ -49,18 +49,9 @@ export class AppController {
     const alternativesPromises = (questions as unknown as (QuestionEntity & Add_id_Property)[])?.map(async (el) => {
       const alternativesData = await this.returnQuestionAlternatives.execute(el._id);
       return alternativesData;
-      /* questionAndAlternatives.question = el;
-      questionAndAlternatives.alternatives = {
-        alternative1: alternativesData?.alternative1,
-        alternative2: alternativesData?.alternative2,
-        alternative3: alternativesData?.alternative3,
-        alternative4: alternativesData?.alternative4,
-        alternative5: alternativesData?.alternative5,
-      }; */
-      /* console.log(questionAndAlternatives); */
-      /* questionAndAlternativesArray.push(questionAndAlternatives); */
     });
-
+    
+    console.log(alternativesPromises);
     
     (questions as unknown as (QuestionEntity & Add_id_Property)[])?.forEach((el, index) => {
       questionAndAlternatives.question = el,
@@ -68,7 +59,6 @@ export class AppController {
       
       questionAndAlternativesArray.push(questionAndAlternatives);
     });
-    console.log(questionAndAlternativesArray);
 
     return questionAndAlternativesArray;
   }

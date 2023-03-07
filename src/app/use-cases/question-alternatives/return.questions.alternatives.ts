@@ -9,5 +9,5 @@ export class ReturnQuestionsAlternatives {
         const alternatives = await this.questionAlternativesRepository.findAlternatives(id);
 
         return alternatives;
-    }
+    };
 };

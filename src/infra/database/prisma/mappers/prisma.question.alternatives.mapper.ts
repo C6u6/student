@@ -22,11 +22,11 @@ export class PrismaQuestionAlternativesMappper {
         };
     };
 
-    static toDomain(raw: AlternativesEntity) {
+    static toDomain(raw) {
         return new Alternatives({
-            id: raw.id,
-            ownedById: raw.ownedById,
-            alternatives: raw.alternatives,
+            id: raw?.id,
+            ownedById: raw?.ownedById,
+            alternatives: raw?.alternatives,
         });
     };
 };

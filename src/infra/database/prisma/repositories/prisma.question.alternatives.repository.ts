@@ -17,13 +17,13 @@ export class PrismaQuestionAlternativesRepository implements QuestionAlternative
         });
     };
 
-    async findAlternatives(id: string): Promise<QuestionRecordHelperForAlternatives | null> {
+    async findAlternatives(id: string): Promise<QuestionRecordHelperForAlternatives | Alternatives | null> {
         const alternatives = await this.prisma.questionRecordHelperForAlternatives.findUnique({
             where: {
                 ownedById: id
             }
         });
 
-        return alternatives;
+        return PrismaQuestionAlternativesMappper.toDomain(alternatives);
     }
 }
